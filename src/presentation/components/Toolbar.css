@@ -1,0 +1,45 @@
+.toolbar {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.icon-button {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    color: #007bff;
+    transition: color 0.3s ease;
+}
+
+.icon-button:hover {
+    color: #0056b3;
+}
+
+.icon-label {
+    margin-left: 5px;
+    font-size: 14px;
+}
+
+.info-card {
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.info-card p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+}

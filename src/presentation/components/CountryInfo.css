@@ -1,0 +1,30 @@
+.country-info {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.country-info h3 {
+    margin: 0;
+}
+
+.country-info p {
+    margin: 5px 0;
+}
+
+@media (max-width: 768px) {
+    .country-info {
+        padding: 8px;
+        margin-top: 8px;
+    }
+
+    .country-info h3 {
+        font-size: 1.2em;
+    }
+
+    .country-info p {
+        font-size: 0.9em;
+    }
+}

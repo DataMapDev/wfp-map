@@ -1,46 +1,33 @@
-# Getting Started with Create React App
+# Map-Based Interface with Data Insights
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+This project implements a dynamic, map-based interface that provides data insights for different countries. Using **Mapbox GL JS**, the map renders as a globe, allowing users to navigate between countries through a dropdown menu. When a country is selected, the map "flies" to that location, focusing on the chosen country, and displays additional information about it.
 
-In the project directory, you can run:
+The interface also includes four buttons representing different data sources, each of which can be clicked to fetch and display data specific to the selected country. As this is a Proof of Concept (POC), the API calls for fetching data are simulated and not fully implemented.
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. **Mapbox Integration**: The globe map is rendered using Mapbox GL JS, allowing smooth transitions (fly-to effect) when a user selects a country.
+   
+2. **Country Selection**: A dropdown menu enables the user to choose a country, which triggers the map to zoom in on that country and display details such as population and income group. Currently, only **Aruba** and **Afghanistan** can be selected, as their coordinates have been manually added. In the future, an API could be used to fetch the coordinates for all countries dynamically.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+3. **Data Buttons**: Four buttons appear after a country is selected:
+   - **IPC (Integrated Food Security Phase Classification)**
+   - **FCS (Food Consumption Score)**
+   - **Climate**
+   - **Hazards**
 
-### `npm test`
+   While the current implementation does not include actual API integration, clicking the buttons simulates fetching data from specific endpoints.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+4. **User Experience Flow**: The design is aimed at providing a seamless experience where the user:
+   1. Selects a country.
+   2. Views country information (population, income group, etc.).
+   3. Clicks one of the four buttons to retrieve additional country-specific data.
 
-### `npm run build`
+## How to Run the Project
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To run the project, simply use the following command:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm start
