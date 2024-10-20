@@ -27,9 +27,22 @@ The interface also includes four buttons representing different data sources, ea
    2. Views country information (population, income group, etc.).
    3. Clicks the **FCS** button to retrieve additional country-specific data.
 
+## Deployment
+
+This project is deployed to **GitHub Pages** and can be accessed at the following URL:
+
+[Live Application](https://datamapdev.github.io/wfp-map/)
+
 ## How to Run the Project
 
-To run the project, simply use the following command:
+To run the project locally, use the following commands:
 
-```bash
-npm start
+1. Install dependencies:
+
+   ```bash
+   npm install
+
+2. Start the project
+
+   ```bash
+   npm start
