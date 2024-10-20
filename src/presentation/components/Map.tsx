@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import CountryDropdown from './CountryDropdown';
 import CountryInfo from './CountryInfo';
-import Toolbar from "./Toolbar";
+import Toolbar from './Toolbar';
 import { CountryService } from '../../application/services/CountryService';
 import { Country } from '../../domain/models/Country';
 import './Map.css';
@@ -22,92 +22,87 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibG96ODUiLCJhIjoiY20yZnlvYzZuMGVrYTJsczE2NjJmZ
  * @returns {JSX.Element} The rendered Map component.
  */
 const Map: React.FC = () => {
-    // Reference to the map container
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
-
-    // State for managing the Mapbox instance
     const [map, setMap] = useState<mapboxgl.Map | null>(null);
-
-    // State for storing the list of countries
     const [countries, setCountries] = useState<Country[]>([]);
-
-    // State for managing the selected country
     const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
 
-    /**
-     * Initializes the Mapbox map when the component mounts.
-     * Adds navigation controls and sets an initial zoom and center position.
-     */
     useEffect(() => {
         const initializeMap = () => {
             const newMap = new mapboxgl.Map({
                 container: mapContainerRef.current as HTMLElement,
                 style: 'mapbox://styles/mapbox/streets-v11',
-                projection: 'globe',  // Enable globe view projection
-                center: [30, 15],  // Initial center [longitude, latitude]
-                zoom: 2,           // Initial zoom level
+                projection: 'globe',
+                center: [30, 15],
+                zoom: 2,
             });
 
-            newMap.addControl(new mapboxgl.NavigationControl()); // Add navigation controls
-            setMap(newMap);  // Set the created map instance in the state
+            newMap.addControl(new mapboxgl.NavigationControl());
+            setMap(newMap);
 
             return newMap;
         };
 
-        const mapInstance = initializeMap();  // Initialize the map
+        const mapInstance = initializeMap();
 
-        // Cleanup the map when the component unmounts
         return () => mapInstance.remove();
     }, []);
 
-    /**
-     * Fetches the list of countries when the component mounts.
-     * Utilizes the CountryService to retrieve the data.
-     */
     useEffect(() => {
         const fetchCountries = async () => {
-            const result = await CountryService.fetchCountries();  // Fetch countries from API
-            setCountries(result);  // Store countries in state
+            const result = await CountryService.fetchCountries();
+            setCountries(result);
         };
         fetchCountries();
     }, []);
 
     /**
+     * Fetches coordinates for the selected country using Mapbox's Geocoding API.
+     *
+     * @param {string} countryName - The name of the selected country.
+     */
+    const fetchCountryCoordinates = async (countryName: string) => {
+        const response = await fetch(
+            `https://api.mapbox.com/search/geocode/v6/forward?q=${encodeURIComponent(countryName)}&types=country&access_token=${mapboxgl.accessToken}`
+        );
+        const data = await response.json();
+        if (data.features.length > 0) {
+            return data.features[0].geometry.coordinates as [number, number];
+        }
+        return null;
+    };
+
+    /**
      * Handles the event when a country is selected from the dropdown.
      * The map zooms in to the selected country's coordinates, and its information is displayed.
      *
-     * @param {Array<number>} coordinates - The [longitude, latitude] coordinates of the selected country.
      * @param {Country} country - The selected country object.
      */
-    const handleCountrySelect = (coordinates: [number, number], country: Country) => {
-        if (map) {
+    const handleCountrySelect = async (country: Country) => {
+        const coordinates = await fetchCountryCoordinates(country.name); // Fetch coordinates based on country name
+        if (coordinates && map) {
             map.flyTo({
-                center: coordinates,  // Fly to the selected country's coordinates
-                zoom: 5,              // Set the zoom level
-                essential: true,       // Ensures that the transition is animated
+                center: coordinates,
+                zoom: 5,
+                essential: true,
             });
-            setSelectedCountry(country);  // Set the selected country in state
+            setSelectedCountry(country);
         }
     };
 
     return (
         <div className="map-container">
-            {/* Map container for Mapbox */}
             <div ref={mapContainerRef} style={{ width: '100%', height: '100vh' }} />
 
-            {/* Dropdown and country info panel */}
             <div className="map-dropdown-container">
-                {/* Dropdown for selecting a country */}
                 <CountryDropdown countries={countries} onCountrySelect={handleCountrySelect} />
 
-                {/* Display country information if a country is selected */}
                 <CountryInfo
                     countryName={selectedCountry?.name || null}
                     incomeGroup={selectedCountry?.incomeGroup || null}
                     population={selectedCountry?.population || null}
                 />
 
-                {/* Display the toolbar if a country is selected */}
                 {selectedCountry && <Toolbar selectedCountryIso3={selectedCountry.iso3} />}
             </div>
         </div>

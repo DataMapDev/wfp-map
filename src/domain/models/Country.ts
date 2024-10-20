@@ -1,7 +1,7 @@
 /**
  * Interface representing a Country.
  *
- * This defines the structure of a country object, including the ISO3 code, name, geographical coordinates,
+ * This defines the structure of a country object, including the ISO3 code, name,
  * income group, and population details. The population is formatted as a string (e.g., "1.2M" for 1.2 million).
  */
 export interface Country {
@@ -14,11 +14,6 @@ export interface Country {
      * The full name of the country.
      */
     name: string;
-
-    /**
-     * The geographical coordinates of the country, represented as a tuple of latitude and longitude.
-     */
-    coordinates: [number, number];
 
     /**
      * The income group classification of the country, typically represented as levels (e.g., 'High', 'Low').

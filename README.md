@@ -10,7 +10,7 @@ The interface also includes four buttons representing different data sources, ea
 
 1. **Mapbox Integration**: The globe map is rendered using Mapbox GL JS, allowing smooth transitions (fly-to effect) when a user selects a country.
 
-2. **Country Selection**: A dropdown menu enables the user to choose a country, which triggers the map to zoom in on that country and display details such as population and income group. Currently, only **Aruba** and **Afghanistan** can be selected, as their coordinates have been manually added. In the future, an API could be used to fetch the coordinates for all countries dynamically.
+2. **Country Selection**: A dropdown menu enables the user to choose a country, which triggers the map to zoom in on that country and display details such as population and income group. The application utilizes the **Mapbox Geocoding API** to fetch the coordinates dynamically for the selected country, enhancing the flexibility of country selection.
 
 3. **Data Buttons**: Four buttons appear after a country is selected:
    - **IPC (Integrated Food Security Phase Classification)**
@@ -43,6 +43,5 @@ To run the project locally, use the following commands:
    npm install
 
 2. Start the project
-
    ```bash
    npm start
