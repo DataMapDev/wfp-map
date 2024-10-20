@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faUtensils, faCloud, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faUtensils, faCloud, faExclamationTriangle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import './Toolbar.css';
+
+interface ToolbarProps {
+    selectedCountryIso3: string; // Get the selected country's ISO3 code
+}
 
 /**
  * Toolbar Component
@@ -12,19 +16,41 @@ import './Toolbar.css';
  *
  * @returns {JSX.Element} The rendered Toolbar component.
  */
-const Toolbar: React.FC = () => {
+const Toolbar: React.FC<ToolbarProps> = ({ selectedCountryIso3 }) => {
     // State to store the current information to be displayed
     const [info, setInfo] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+
+    // Function to format large numbers (e.g., 23075100 -> 23.1M)
+    const formatLargeNumber = (num: number): string => {
+        return num >= 1_000_000 ? `${(num / 1_000_000).toFixed(1)}M` : num.toString();
+    };
 
     /**
      * Simulates fetching data from the IPC API and updates the displayed information.
      */
     const handleIPCClick = () => setInfo('Information from IPC API here');
 
-    /**
-     * Simulates fetching data from the FCS and rCSI APIs and updates the displayed information.
-     */
-    const handleFCSClick = () => setInfo('Information from FCS and rCSI API here');
+    // Fetch FCS data for the selected country
+    const handleFCSClick = async () => {
+        setLoading(true);
+        try {
+            const response = await fetch(`https://api.hungermapdata.org/v1/foodsecurity/country/${selectedCountryIso3}`);
+            const data = await response.json();
+
+            if (data?.body?.metrics?.fcs?.people) {
+                const fcsPeople = data.body.metrics.fcs.people;
+                const formattedFcsPeople = formatLargeNumber(fcsPeople);
+                setInfo(`People with insufficient food consumption: ${formattedFcsPeople}`);
+            } else {
+                setInfo('No data available for food consumption.');
+            }
+        } catch (error) {
+            setInfo('Failed to fetch FCS data.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     /**
      * Simulates fetching data from the Climate Data API and updates the displayed information.
@@ -61,6 +87,8 @@ const Toolbar: React.FC = () => {
                 <FontAwesomeIcon icon={faExclamationTriangle} />
                 <span className="icon-label">Hazards</span>
             </button>
+
+            {loading && <FontAwesomeIcon icon={faSpinner} spin size="2x" />}
 
             {/* Information Card */}
             {info && (

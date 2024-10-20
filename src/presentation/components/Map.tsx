@@ -108,7 +108,7 @@ const Map: React.FC = () => {
                 />
 
                 {/* Display the toolbar if a country is selected */}
-                {selectedCountry && <Toolbar />}
+                {selectedCountry && <Toolbar selectedCountryIso3={selectedCountry.iso3} />}
             </div>
         </div>
     );
